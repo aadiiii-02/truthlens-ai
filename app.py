@@ -1,6 +1,9 @@
 import os
 import re
 import html
+import urllib.parse
+import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 import pandas as pd
@@ -175,6 +178,31 @@ div.stButton > button:hover {
 footer {visibility:hidden;}
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""<style>
+/* TRUTHLENS reference-inspired premium black interface: A + B + C + D */
+:root { --bg:#050506; --panel:#0b0b0e; --line:rgba(255,255,255,.12); --cyan:#ff4d5f; --violet:#ff4d5f; --muted:#a4a4ad; }
+.stApp { background: radial-gradient(ellipse at 82% 5%,rgba(255,40,60,.10),transparent 28%),radial-gradient(ellipse at 10% 95%,rgba(255,40,60,.06),transparent 30%),#050506!important; color:#f6f6f7; }
+[data-testid="stSidebar"] { background:linear-gradient(180deg,#080809,#0b080a 70%,#100809)!important; border-right:1px solid rgba(255,65,80,.2)!important; }
+.eyebrow,.section-label { color:#ff6572!important; }
+.hero { border:1px solid rgba(255,65,80,.24)!important; background:linear-gradient(120deg,rgba(18,15,17,.98),rgba(8,8,10,.96))!important; box-shadow:0 18px 70px rgba(0,0,0,.34)!important; }
+.hero:after { border-color:rgba(255,65,80,.22)!important; box-shadow:0 0 0 24px rgba(255,65,80,.025),0 0 0 50px rgba(255,65,80,.02)!important; }
+.gradient { background:linear-gradient(90deg,#fff,#ff5667)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important; }
+.pill { border-color:rgba(255,80,95,.3)!important;color:#ff9aa3!important;background:rgba(255,65,80,.06)!important; }
+.metric-card,.panel { background:linear-gradient(145deg,rgba(18,17,19,.96),rgba(9,9,11,.96))!important;border-color:rgba(255,255,255,.11)!important; }
+div.stButton > button { background:linear-gradient(100deg,#3b1117,#171215)!important;border:1px solid rgba(255,76,91,.5)!important;color:#fff!important; }
+div.stButton > button:hover { border-color:#ff5969!important;box-shadow:0 0 25px rgba(255,55,75,.17)!important; }
+.stTextArea textarea,div[data-baseweb="select"]>div { background:#0b0b0e!important;border-color:rgba(255,255,255,.16)!important;color:#f4f4f5!important; }
+.scan-console { background:linear-gradient(145deg,#110d10,#09090b)!important;border-color:rgba(255,70,85,.24)!important; }
+.scan-console:after { background:linear-gradient(180deg,transparent,rgba(255,65,80,.12),transparent)!important; }
+.radar { border-color:rgba(255,90,105,.7)!important;color:#ff6b79!important;box-shadow:0 0 20px rgba(255,70,85,.16)!important; }
+.result-box { border-color:rgba(255,70,85,.25)!important;background:linear-gradient(135deg,rgba(32,15,19,.7),rgba(12,11,13,.85))!important; }
+.warning-box { border-color:rgba(255,174,74,.32)!important;background:rgba(255,174,74,.06)!important; }
+.fake-alert { animation:flickerIn .55s ease-out both,pulseGlowRed 2.4s ease-in-out .5s infinite!important; }
+@keyframes pulseGlowRed { 0%,100%{box-shadow:0 0 12px rgba(255,55,75,.08),inset 0 0 10px rgba(255,55,75,.02)}50%{box-shadow:0 0 32px rgba(255,55,75,.23),inset 0 0 18px rgba(255,55,75,.05)} }
+.real-alert { border-color:rgba(62,220,130,.35)!important;background:linear-gradient(120deg,rgba(9,35,23,.75),rgba(10,13,12,.9))!important; }
+.live-card {border:1px solid rgba(255,255,255,.12);border-radius:15px;background:linear-gradient(135deg,#121114,#09090b);padding:17px 18px;margin:10px 0;}
+.live-card a {color:#ff8791;text-decoration:none}.live-meta{font: .72rem 'DM Mono',monospace;color:#9c9ca5;letter-spacing:.05em;text-transform:uppercase}
+</style>""", unsafe_allow_html=True)
 
 # ---------- Small built-in demonstration dataset ----------
 # This is deliberately labelled as a demonstration set, not a validated news corpus.
@@ -327,25 +355,40 @@ def explain_words(model, text, predicted_label, limit=8):
             break
     return found
 
+# ---------- Recent news RSS helpers ----------
+def fetch_google_news(query="India", limit=10):
+    """Fetch recent headlines via Google News RSS; availability depends on network access."""
+    q = urllib.parse.quote(query.strip() or "India")
+    url = f"https://news.google.com/rss/search?q={q}&hl=en-IN&gl=IN&ceid=IN:en"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 TRUTHLENS-AI/1.0"})
+    with urllib.request.urlopen(req, timeout=12) as response:
+        root = ET.fromstring(response.read())
+    items=[]
+    for item in root.findall("./channel/item")[:limit]:
+        items.append({"title": item.findtext("title", "Untitled"), "link": item.findtext("link", ""), "published": item.findtext("pubDate", "Date unavailable"), "source": (item.findtext("source", "") or "News source")})
+    return items
+
 # ---------- Sidebar ----------
 with st.sidebar:
     st.markdown('<div class="eyebrow">TRUTHLENS / SYSTEM</div>', unsafe_allow_html=True)
     st.markdown("## 🛰️ Mission Control")
-    page = st.radio("NAVIGATION", ["Scanner", "Model Lab", "About"], label_visibility="visible")
+    if "navigation_target" in st.session_state:
+        st.session_state["nav_page"] = st.session_state.pop("navigation_target")
+    page = st.radio("NAVIGATION", ["Home", "Scanner", "Live News", "Model Lab", "About"], index=0, key="nav_page", label_visibility="visible")
     st.divider()
     st.markdown('<div class="section-label">SYSTEM STATUS</div>', unsafe_allow_html=True)
     st.markdown("🟢 Interface online")
     st.markdown("🔵 Local ML pipeline")
-    st.markdown("⚪ Evidence verification: not connected")
+    st.markdown("🟡 Live news: RSS search available")
     st.divider()
-    st.markdown('<div class="small-muted">Build 2.2 · NEON ALERT INTERFACE<br>Designed for responsible media literacy.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="small-muted">Build 3.0 · BLACK GLASS INTERFACE<br>Designed for responsible media literacy.</div>', unsafe_allow_html=True)
 
 # ---------- Header ----------
 st.markdown("""
 <div class="hero">
-  <div class="eyebrow">◉ TRUTHLENS NEURAL SCANNER &nbsp; / &nbsp; NEON ALERT BUILD 2.2</div>
+  <div class="eyebrow">◉ TRUTHLENS NEURAL SCANNER &nbsp; / &nbsp; BLACK GLASS BUILD 3.0</div>
   <div class="hero-title">Decode the <span class="gradient">signal.</span></div>
-  <div class="hero-copy">An experimental media-intelligence interface. Scan article language, inspect model signals, and compare predictions against labelled research examples — not a substitute for independent fact-checking.</div>
+  <div class="hero-copy">An AI-assisted news intelligence workspace. Explore recent headlines, screen claims, and inspect evidence sources before sharing.</div>
   <div style="margin-top:20px"><span class="pill">NLP ENGINE</span><span class="pill">TF-IDF + LOGISTIC REGRESSION</span><span class="pill">EXPLAINABLE SIGNALS</span></div>
 </div>
 """, unsafe_allow_html=True)
@@ -402,7 +445,54 @@ elif dataset_source.startswith("ISOT"):
 elif not metrics["split"]:
     st.markdown('<div class="warning-box">The dataset is small, so metrics are calculated on training examples and are not an independent test. Use more labelled examples for a reliable evaluation.</div>', unsafe_allow_html=True)
 
-if page == "Scanner":
+if page == "Home":
+    st.markdown('<div class="section-label">INTELLIGENCE OVERVIEW / 00</div>', unsafe_allow_html=True)
+    st.markdown("## Verify the signal. Not just the headline.")
+    st.write("Choose a workflow to begin. TRUTHLENS combines an experimental text classifier with recent-news discovery; evidence must still be checked carefully.")
+    c1,c2=st.columns(2,gap="large")
+    with c1:
+        st.markdown('<div class="live-card"><div class="live-meta">01 / CLAIM SCANNER</div><h3>Headline Verification</h3><p>Screen a short claim or headline with the text model, then investigate relevant reports.</p></div>',unsafe_allow_html=True)
+        if st.button("OPEN SCANNER →",use_container_width=True):
+            st.session_state["navigation_target"]="Scanner"
+            st.rerun()
+    with c2:
+        st.markdown('<div class="live-card"><div class="live-meta">02 / ARTICLE INTELLIGENCE</div><h3>Full Article Analysis</h3><p>Paste an article to inspect learned text patterns and use its key claim as a search query.</p></div>',unsafe_allow_html=True)
+        if st.button("ANALYSE ARTICLE →",use_container_width=True):
+            st.session_state["navigation_target"]="Scanner"
+            st.rerun()
+    st.markdown("### Live news discovery")
+    query=st.text_input("Search recent headlines",value="India",key="home_news_query",placeholder="e.g. India space mission, climate, education")
+    if st.button("FETCH RECENT NEWS",use_container_width=True,key="home_fetch_news"):
+        try:
+            items=fetch_google_news(query,6)
+            st.session_state["recent_news_items"]=items
+            st.session_state["recent_news_query"]=query
+        except Exception as e:
+            st.warning("Could not reach the news feed right now. Please retry later. Network access may be unavailable on the hosting service.")
+    for item in st.session_state.get("recent_news_items",[]):
+        st.markdown(f'<div class="live-card"><div class="live-meta">{html.escape(item["source"])} · {html.escape(item["published"])}</div><h4>{html.escape(item["title"])}</h4><a href="{html.escape(item["link"],quote=True)}" target="_blank">OPEN SOURCE ↗</a></div>',unsafe_allow_html=True)
+
+elif page == "Live News":
+    st.markdown('<div class="section-label">LIVE NEWS / DISCOVERY FEED</div>',unsafe_allow_html=True)
+    st.header("Recent headlines, ready to investigate")
+    st.caption("Headlines are fetched from Google News RSS. A headline appearing here does not mean it has been independently verified.")
+    query=st.text_input("Search topic or claim",value=st.session_state.get("recent_news_query","India"),key="live_news_query",placeholder="Search a headline, person, event, or claim")
+    col_a,col_b=st.columns([1,3])
+    with col_a:
+        count=st.selectbox("Headlines",[5,10,15,20],index=1)
+    with col_b:
+        if st.button("↻ SEARCH LIVE NEWS",use_container_width=True):
+            try:
+                st.session_state["recent_news_items"]=fetch_google_news(query,count)
+                st.session_state["recent_news_query"]=query
+                st.success(f"Loaded headlines for: {query}")
+            except Exception:
+                st.error("News feed could not be reached. Try again later; this can happen if the host blocks external RSS requests.")
+    for item in st.session_state.get("recent_news_items",[]):
+        st.markdown(f'<div class="live-card"><div class="live-meta">{html.escape(item["source"])} · {html.escape(item["published"])}</div><h4>{html.escape(item["title"])}</h4><a href="{html.escape(item["link"],quote=True)}" target="_blank">READ REPORT ↗</a></div>',unsafe_allow_html=True)
+    st.markdown('<div class="warning-box">EVIDENCE NOTE: This feed discovers reports; it does not prove that a claim is true. The current ML classifier is a text-pattern screening tool, not an independent fact-checking engine.</div>',unsafe_allow_html=True)
+
+elif page == "Scanner":
     left, right = st.columns([1.2, .8], gap="large")
     with left:
         st.markdown('<div class="section-label">01 / INPUT CHANNEL</div>', unsafe_allow_html=True)
@@ -541,12 +631,12 @@ elif page == "Model Lab":
 else:
     st.markdown('<div class="section-label">ABOUT / PROJECT BRIEF</div>', unsafe_allow_html=True)
     st.header("What is TRUTHLENS AI?")
-    st.write("TRUTHLENS AI is a student machine-learning project exploring text classification for media literacy. It provides a prediction based on learned patterns in labelled examples and surfaces words that influenced the model.")
+    st.write("TRUTHLENS AI is a student news-intelligence prototype. Its classifier identifies text patterns, while the Live News section discovers recent reports through RSS. RSS discovery is not the same as evidence-based verification.")
     st.subheader("Technology stack")
     st.markdown("- **TF-IDF:** converts text into numerical features based on word and phrase importance.\n- **Logistic Regression:** learns a decision boundary from labelled examples.\n- **scikit-learn Pipeline:** keeps text transformation and classification together.\n- **Streamlit:** builds the interactive web interface in Python.\n- **Plotly:** visualizes dataset balance.")
     st.subheader("Known limitations")
     st.markdown("- The demo examples are intentionally small and must not be used to judge real news.\n- Real-world reliability depends on the quality, size, balance, and date of the dataset.\n- The model can learn writing style and dataset bias instead of factual truth.\n- It does not check live sources or independently verify claims.")
-    st.info("Future work: connect a reputable fact-checking source, add source/date metadata, evaluate on recent unseen articles, and test for bias across topics.")
+    st.info("Next step: add a dedicated evidence-comparison service or fact-checking API to assess claims against multiple sources. Always inspect original reports and dates.")
 
 st.divider()
 st.markdown('<div class="small-muted" style="text-align:center">TRUTHLENS AI · Student research prototype · Always verify consequential claims independently.</div>', unsafe_allow_html=True)
