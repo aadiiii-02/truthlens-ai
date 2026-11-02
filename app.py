@@ -142,6 +142,36 @@ div.stButton > button:hover {
 @keyframes cardScan { 0% { left:-35%; opacity:0; } 15% { opacity:.9; } 55% { opacity:.5; } 100% { left:120%; opacity:0; } }
 @media (prefers-reduced-motion: reduce) { *,*:before,*:after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
 
+
+/* RESULT ALERT: restrained, high-contrast and accessible */
+.fake-alert {
+  position:relative; display:flex; gap:15px; align-items:flex-start;
+  margin:0 0 16px; padding:17px 19px; overflow:hidden;
+  border:1px solid rgba(255,94,120,.65); border-left:4px solid #ff5d78;
+  border-radius:15px; color:#ffeaf0;
+  background:linear-gradient(110deg,rgba(72,18,39,.82),rgba(23,15,31,.94));
+  box-shadow:0 0 0 1px rgba(255,93,120,.08),0 0 26px rgba(255,65,105,.12);
+  animation: alertEnter .48s ease-out both, alertBreath 2.8s ease-in-out .5s infinite;
+}
+.fake-alert:after { content:""; position:absolute; top:0; bottom:0; left:-45%; width:32%;
+  background:linear-gradient(90deg,transparent,rgba(255,128,151,.10),transparent);
+  transform:skewX(-18deg); animation:alertSweep 4.5s ease-in-out 1s infinite; pointer-events:none; }
+.alert-icon { flex:0 0 37px; width:37px;height:37px;display:grid;place-items:center;
+  border-radius:11px;color:#ff7087;background:rgba(255,93,120,.12);
+  border:1px solid rgba(255,93,120,.36);font-size:21px;animation:iconPulse 1.8s ease-in-out infinite; }
+.alert-kicker { font:500 .68rem 'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#ff8da0;margin-bottom:4px; }
+.alert-title { font-size:1.13rem;font-weight:800;letter-spacing:-.02em;color:#fff0f3;margin-bottom:4px; }
+.alert-copy { color:#e6bac5;font-size:.88rem;line-height:1.55; }
+.real-alert { display:flex;gap:12px;align-items:flex-start;margin:0 0 16px;padding:15px 17px;
+  border:1px solid rgba(84,231,255,.30);border-left:3px solid #54e7ff;border-radius:14px;
+  background:linear-gradient(110deg,rgba(10,49,59,.65),rgba(12,19,33,.92));animation:alertEnter .45s ease-out both; }
+.real-alert .alert-icon { color:#54e7ff;background:rgba(84,231,255,.08);border-color:rgba(84,231,255,.25);animation:none; }
+@keyframes alertEnter { from {opacity:0;transform:translateY(8px);filter:blur(3px)} to {opacity:1;transform:translateY(0);filter:blur(0)} }
+@keyframes alertBreath { 0%,100% {box-shadow:0 0 0 1px rgba(255,93,120,.06),0 0 15px rgba(255,65,105,.08)} 50% {box-shadow:0 0 0 1px rgba(255,93,120,.16),0 0 25px rgba(255,65,105,.18)} }
+@keyframes iconPulse { 0%,100% {transform:scale(1)} 50% {transform:scale(1.06)} }
+@keyframes alertSweep { 0%,35% {left:-45%;opacity:0} 48% {opacity:1} 72%,100% {left:130%;opacity:0} }
+@media (prefers-reduced-motion: reduce) { .fake-alert,.real-alert,.alert-icon,.fake-alert:after {animation:none!important} }
+
 footer {visibility:hidden;}
 </style>
 """, unsafe_allow_html=True)
@@ -308,14 +338,14 @@ with st.sidebar:
     st.markdown("🔵 Local ML pipeline")
     st.markdown("⚪ Evidence verification: not connected")
     st.divider()
-    st.markdown('<div class="small-muted">Build 2.0 · Student research prototype<br>Designed for responsible media literacy.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="small-muted">Build 2.2 · NEON ALERT INTERFACE<br>Designed for responsible media literacy.</div>', unsafe_allow_html=True)
 
 # ---------- Header ----------
 st.markdown("""
 <div class="hero">
-  <div class="eyebrow">◉ MEDIA INTELLIGENCE PLATFORM &nbsp; / &nbsp; BUILD 01</div>
-  <div class="hero-title">See beyond the <span class="gradient">headline.</span></div>
-  <div class="hero-copy">A machine-learning research prototype that studies the language of a news article and estimates whether it resembles examples labelled reliable or unreliable in its training data.</div>
+  <div class="eyebrow">◉ TRUTHLENS NEURAL SCANNER &nbsp; / &nbsp; NEON ALERT BUILD 2.2</div>
+  <div class="hero-title">Decode the <span class="gradient">signal.</span></div>
+  <div class="hero-copy">An experimental media-intelligence interface. Scan article language, inspect model signals, and compare predictions against labelled research examples — not a substitute for independent fact-checking.</div>
   <div style="margin-top:20px"><span class="pill">NLP ENGINE</span><span class="pill">TF-IDF + LOGISTIC REGRESSION</span><span class="pill">EXPLAINABLE SIGNALS</span></div>
 </div>
 """, unsafe_allow_html=True)
@@ -421,8 +451,32 @@ if page == "Scanner":
             st.markdown('<div class="section-label">03 / SCAN REPORT</div>', unsafe_allow_html=True)
             a, b = st.columns([1, 1], gap="large")
             with a:
-                label_color = "#ffbd69" if pred == "FAKE" else "#54e7ff"
-                title = "Potentially unreliable pattern" if pred == "FAKE" else "Reliable-like language pattern"
+                label_color = "#ff7087" if pred == "FAKE" else "#54e7ff"
+                title = "Potentially misleading pattern detected" if pred == "FAKE" else "No strong fake-news pattern detected"
+                # The animated alert is triggered only by the model's FAKE class.
+                # It is deliberately worded as a warning signal, not a factual verdict.
+                if pred == "FAKE":
+                    st.markdown(f'''
+                    <div class="fake-alert" role="alert" aria-live="polite">
+                      <div class="alert-icon">⚠</div>
+                      <div>
+                        <div class="alert-kicker">TRUTHLENS / CAUTION SIGNAL</div>
+                        <div class="alert-title">Potential misinformation pattern detected</div>
+                        <div class="alert-copy">The text resembles patterns learned from the labelled dataset. Pause before sharing and verify the claim with credible, independent sources.</div>
+                      </div>
+                    </div>
+                    ''', unsafe_allow_html=True)
+                else:
+                    st.markdown('''
+                    <div class="real-alert" role="status">
+                      <div class="alert-icon">✦</div>
+                      <div>
+                        <div class="alert-kicker">TRUTHLENS / SCAN COMPLETE</div>
+                        <div class="alert-title" style="color:#dffcff">No strong fake-news pattern detected</div>
+                        <div class="alert-copy">This is not proof that the story is true. Check the original source and corroborate important claims.</div>
+                      </div>
+                    </div>
+                    ''', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="result-box">
                   <div class="eyebrow">◉ MODEL CLASSIFICATION / SCAN COMPLETE</div>
