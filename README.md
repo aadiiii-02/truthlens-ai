@@ -1,19 +1,16 @@
-# TRUTHLENS AI — Future Interface (Build 2.1)
+# TRUTHLENS AI — Reference Red Glass UI
 
-A Streamlit-based student research prototype for news-text classification using TF-IDF and Logistic Regression.
+Streamlit news-intelligence prototype with a black/red interface inspired by the provided four-panel reference, an animated digital globe illustration on Home, Scanner, Live News, Evidence dashboard, Model Lab, and About.
+
+## Deploy
+1. Download and extract this ZIP.
+2. Replace the files in your GitHub repository with these files, including `.streamlit/config.toml`.
+3. Commit changes and let Streamlit Community Cloud rebuild the app.
+
+## Live news and evidence
+The app uses Google News RSS to discover recent headlines and links to original reports. The Evidence page searches reports related to a claim. Headlines are not automatically proven true/false by RSS. The existing ML classifier identifies text patterns from its dataset and is not a fact-checking engine.
 
 ## Files
-- `app.py` — application and animated interface
+- `app.py` — app and UI
 - `requirements.txt` — Python dependencies
-- `.streamlit/config.toml` — dark theme defaults
-
-## Deploy / update
-1. Upload `app.py`, `requirements.txt`, and `README.md` to the root of your GitHub repository.
-2. Create `.streamlit/config.toml` using the included file.
-3. Deploy `app.py` through Streamlit Community Cloud, or commit changes to an existing connected repository.
-
-## Dataset
-The app offers a small built-in demo, an optional public ISOT sample fetched from a configured public CSV mirror, or a user-uploaded CSV. The public sample is historical and may be unavailable if its source URL changes. If it cannot load, choose demo mode or upload a properly labelled dataset.
-
-## Important limitation
-The model learns text patterns from its labelled training examples. Its output is not proof that a story is true or false, and the class probability is not a verified probability of factual truth. Historical datasets can contain topic/source bias. Use metrics as a teaching demonstration, not a production fact-checking claim.
+- `.streamlit/config.toml` — dark theme
