@@ -26,7 +26,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
-:root { --bg:#070b14; --panel:#0d1423; --line:rgba(148,163,184,.17); --cyan:#54e7ff; --violet:#9b8cff; --muted:#9aa9c1; }
+:root { --bg:#070b14; --panel:#0d1423; --line:rgba(148,163,184,.17); --cyan:#ff5268; --violet:#ff263f; --muted:#9aa9c1; }
 html, body, [class*="css"] { font-family:'Manrope',sans-serif; }
 .stApp { background: radial-gradient(ellipse at 70% 0%, rgba(42,66,140,.22), transparent 35%), #070b14; color:#eef4ff; }
 [data-testid="stHeader"] { background:rgba(7,11,20,.72); }
@@ -36,32 +36,32 @@ html, body, [class*="css"] { font-family:'Manrope',sans-serif; }
 h1,h2,h3 { letter-spacing:-.035em; }
 p,li { color:#c1cce0; }
 .eyebrow { font-family:'DM Mono',monospace; color:var(--cyan); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; }
-.hero { border:1px solid rgba(84,231,255,.22); border-radius:24px; padding:30px 32px; background:linear-gradient(120deg,rgba(17,31,55,.95),rgba(14,17,37,.82)); box-shadow:0 18px 70px rgba(0,0,0,.22); position:relative; overflow:hidden; }
-.hero:after { content:''; position:absolute; width:280px;height:280px;right:-70px;top:-100px;border-radius:50%;border:1px solid rgba(84,231,255,.18);box-shadow:0 0 0 24px rgba(84,231,255,.025),0 0 0 50px rgba(155,140,255,.025); }
+.hero { border:1px solid rgba(255,82,104,.22); border-radius:24px; padding:30px 32px; background:linear-gradient(120deg,rgba(20,8,12,.95),rgba(10,8,10,.92)); box-shadow:0 18px 70px rgba(0,0,0,.22); position:relative; overflow:hidden; }
+.hero:after { content:''; position:absolute; width:280px;height:280px;right:-70px;top:-100px;border-radius:50%;border:1px solid rgba(255,82,104,.18);box-shadow:0 0 0 24px rgba(255,82,104,.025),0 0 0 50px rgba(255,38,63,.025); }
 .hero-title { font-size:clamp(2rem,4vw,3.6rem); font-weight:800; line-height:1.02; color:#f4f8ff; margin:12px 0; }
-.gradient { background:linear-gradient(90deg,#54e7ff,#a69aff);-webkit-background-clip:text;background-clip:text;color:transparent; }
+.gradient { background:linear-gradient(90deg,#ff5268,#ff8b96);-webkit-background-clip:text;background-clip:text;color:transparent; }
 .hero-copy { max-width:720px; font-size:1rem; line-height:1.7; color:#aebbd1; }
-.pill { display:inline-block; border:1px solid rgba(84,231,255,.28); color:#8cefff; background:rgba(84,231,255,.07); padding:5px 10px; border-radius:100px; font-family:'DM Mono',monospace; font-size:.72rem; margin-right:6px; }
+.pill { display:inline-block; border:1px solid rgba(255,82,104,.28); color:#8cefff; background:rgba(255,82,104,.07); padding:5px 10px; border-radius:100px; font-family:'DM Mono',monospace; font-size:.72rem; margin-right:6px; }
 .metric-card { background:linear-gradient(145deg,rgba(17,27,46,.92),rgba(11,17,30,.92));border:1px solid var(--line);border-radius:16px;padding:18px 20px;min-height:110px; }
 .metric-label { font-family:'DM Mono',monospace;color:#94a5c1;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em; }
 .metric-value { font-size:1.7rem;font-weight:800;color:#f3f7ff;margin-top:7px; }
 .panel { border:1px solid var(--line);border-radius:18px;background:rgba(12,19,33,.78);padding:22px; }
 .section-label { font-family:'DM Mono',monospace;color:#8fa2c0;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase; }
-div.stButton > button { border-radius:11px;border:1px solid rgba(84,231,255,.32);background:linear-gradient(90deg,#12617a,#4c3e91);color:white;font-weight:700;min-height:2.8rem; }
-div.stButton > button:hover { border-color:#54e7ff;color:white;box-shadow:0 0 24px rgba(84,231,255,.12); }
+div.stButton > button { border-radius:11px;border:1px solid rgba(255,82,104,.32);background:linear-gradient(90deg,#67101c,#a21b31);color:white;font-weight:700;min-height:2.8rem; }
+div.stButton > button:hover { border-color:#ff5268;color:white;box-shadow:0 0 24px rgba(255,82,104,.12); }
 .stTextArea textarea { background:#0a1120!important;color:#eaf1ff!important;border:1px solid rgba(148,163,184,.25)!important;border-radius:12px!important; }
 div[data-baseweb="select"] > div { background:#0a1120;border-color:rgba(148,163,184,.25); }
 hr { border-color:var(--line); }
 .small-muted { color:#8d9db7;font-size:.82rem;line-height:1.6; }
-.result-box { border:1px solid rgba(84,231,255,.24);background:linear-gradient(135deg,rgba(20,41,61,.7),rgba(22,20,46,.65));padding:22px;border-radius:18px; }
+.result-box { border:1px solid rgba(255,82,104,.24);background:linear-gradient(135deg,rgba(20,41,61,.7),rgba(22,20,46,.65));padding:22px;border-radius:18px; }
 .warning-box { border:1px solid rgba(255,191,105,.28);background:rgba(255,191,105,.06);padding:13px 16px;border-radius:12px;color:#f2d9ad;font-size:.86rem; }
-@keyframes pulseGlow { 0%,100% { box-shadow:0 0 12px rgba(84,231,255,.10), inset 0 0 10px rgba(84,231,255,.03); transform:translateY(0); } 50% { box-shadow:0 0 32px rgba(84,231,255,.26), inset 0 0 18px rgba(84,231,255,.06); transform:translateY(-2px); } }
+@keyframes pulseGlow { 0%,100% { box-shadow:0 0 12px rgba(255,82,104,.10), inset 0 0 10px rgba(255,82,104,.03); transform:translateY(0); } 50% { box-shadow:0 0 32px rgba(255,82,104,.26), inset 0 0 18px rgba(255,82,104,.06); transform:translateY(-2px); } }
 @keyframes scanSweep { 0% { transform:translateY(-120%); opacity:0; } 15% { opacity:.9; } 85% { opacity:.9; } 100% { transform:translateY(260%); opacity:0; } }
 @keyframes flickerIn { 0% { opacity:0; filter:blur(7px); transform:scale(.96); } 65% { opacity:1; filter:blur(0); transform:scale(1.015); } 100% { transform:scale(1); } }
 @keyframes spinRadar { to { transform:rotate(360deg); } }
-.scan-console { position:relative; overflow:hidden; border:1px solid rgba(84,231,255,.22); border-radius:18px; padding:18px; background:linear-gradient(145deg,rgba(9,27,43,.96),rgba(20,17,44,.95)); }
-.scan-console:after { content:''; position:absolute; left:0; right:0; top:0; height:35%; background:linear-gradient(180deg,transparent,rgba(84,231,255,.12),transparent); animation:scanSweep 3.2s linear infinite; pointer-events:none; }
-.radar { display:inline-flex; width:42px; height:42px; border:1px solid rgba(84,231,255,.6); border-radius:50%; align-items:center; justify-content:center; color:#54e7ff; box-shadow:0 0 20px rgba(84,231,255,.12); animation:spinRadar 7s linear infinite; }
+.scan-console { position:relative; overflow:hidden; border:1px solid rgba(255,82,104,.22); border-radius:18px; padding:18px; background:linear-gradient(145deg,rgba(28,7,12,.96),rgba(15,8,10,.95)); }
+.scan-console:after { content:''; position:absolute; left:0; right:0; top:0; height:35%; background:linear-gradient(180deg,transparent,rgba(255,82,104,.12),transparent); animation:scanSweep 3.2s linear infinite; pointer-events:none; }
+.radar { display:inline-flex; width:42px; height:42px; border:1px solid rgba(255,82,104,.6); border-radius:50%; align-items:center; justify-content:center; color:#ff5268; box-shadow:0 0 20px rgba(255,82,104,.12); animation:spinRadar 7s linear infinite; }
 .result-box { animation:flickerIn .65s ease-out both, pulseGlow 3s ease-in-out 0.7s infinite; }
 .result-stamp { display:inline-block; padding:6px 12px; border-radius:8px; border:1px solid currentColor; letter-spacing:.14em; font:700 .72rem 'DM Mono',monospace; transform:rotate(-2deg); }
 .metric-card { animation:flickerIn .5s ease-out both; }
@@ -71,10 +71,10 @@ div.stButton > button:active { transform:scale(.985); }
 /* FUTURE INTERFACE LAYER */
 .stApp {
   background:
-    radial-gradient(ellipse at 12% 4%, rgba(0,220,255,.10), transparent 27%),
-    radial-gradient(ellipse at 88% 12%, rgba(129,91,255,.13), transparent 29%),
-    linear-gradient(rgba(84,231,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(84,231,255,.025) 1px, transparent 1px),
+    radial-gradient(ellipse at 12% 4%, rgba(255,0,40,.10), transparent 27%),
+    radial-gradient(ellipse at 88% 12%, rgba(255,50,70,.13), transparent 29%),
+    linear-gradient(rgba(255,82,104,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,82,104,.025) 1px, transparent 1px),
     #050811 !important;
   background-size:auto,auto,42px 42px,42px 42px,auto !important;
 }
@@ -84,22 +84,22 @@ div.stButton > button:active { transform:scale(.985); }
 }
 .hero {
   background:
-    radial-gradient(circle at 88% 28%, rgba(84,231,255,.12), transparent 20%),
-    linear-gradient(115deg, rgba(12,26,48,.97), rgba(12,13,31,.96)) !important;
-  box-shadow: 0 0 0 1px rgba(84,231,255,.035), 0 24px 90px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.035) !important;
+    radial-gradient(circle at 88% 28%, rgba(255,82,104,.12), transparent 20%),
+    linear-gradient(115deg, rgba(20,8,12,.97), rgba(12,8,10,.96)) !important;
+  box-shadow: 0 0 0 1px rgba(255,82,104,.035), 0 24px 90px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.035) !important;
   animation: heroEnter .8s cubic-bezier(.2,.8,.2,1) both;
 }
 .hero:before {
   content:""; position:absolute; width:340px; height:340px; right:-90px; top:-115px;
-  border:1px solid rgba(84,231,255,.22); border-radius:50%;
-  box-shadow:0 0 0 18px rgba(84,231,255,.025),0 0 0 42px rgba(155,140,255,.025),0 0 65px rgba(84,231,255,.08);
+  border:1px solid rgba(255,82,104,.22); border-radius:50%;
+  box-shadow:0 0 0 18px rgba(255,82,104,.025),0 0 0 42px rgba(255,38,63,.025),0 0 65px rgba(255,82,104,.08);
   animation: orbitFloat 9s ease-in-out infinite;
 }
 .hero:after {
   content:""; position:absolute; width:210px;height:210px;right:-24px;top:-52px;border-radius:50%;
-  border:1px dashed rgba(155,140,255,.28); animation: spinRadar 24s linear infinite;
+  border:1px dashed rgba(255,38,63,.28); animation: spinRadar 24s linear infinite;
 }
-.hero-title { text-shadow:0 0 34px rgba(84,231,255,.08); }
+.hero-title { text-shadow:0 0 34px rgba(255,82,104,.08); }
 .metric-card {
   position:relative; overflow:hidden;
   background:linear-gradient(145deg,rgba(16,28,49,.94),rgba(8,14,27,.97)) !important;
@@ -109,25 +109,25 @@ div.stButton > button:active { transform:scale(.985); }
 }
 .metric-card:after {
   content:""; position:absolute; left:-30%; top:0; width:35%; height:2px;
-  background:linear-gradient(90deg,transparent,#54e7ff,transparent);
+  background:linear-gradient(90deg,transparent,#ff5268,transparent);
   animation: cardScan 5s linear infinite;
 }
-.metric-card:hover { transform:translateY(-4px); border-color:rgba(84,231,255,.4)!important; box-shadow:0 14px 35px rgba(0,0,0,.25),0 0 24px rgba(84,231,255,.07); }
+.metric-card:hover { transform:translateY(-4px); border-color:rgba(255,82,104,.4)!important; box-shadow:0 14px 35px rgba(0,0,0,.25),0 0 24px rgba(255,82,104,.07); }
 .panel {
   background:linear-gradient(145deg,rgba(12,21,38,.91),rgba(8,13,25,.93)) !important;
   box-shadow:inset 0 1px rgba(255,255,255,.025),0 15px 38px rgba(0,0,0,.13);
 }
 .scan-console {
   background:
-    radial-gradient(circle at 85% 20%,rgba(84,231,255,.12),transparent 24%),
+    radial-gradient(circle at 85% 20%,rgba(255,82,104,.12),transparent 24%),
     linear-gradient(145deg,rgba(7,25,40,.98),rgba(17,12,39,.98)) !important;
-  box-shadow:inset 0 0 40px rgba(84,231,255,.025),0 0 28px rgba(84,231,255,.035);
+  box-shadow:inset 0 0 40px rgba(255,82,104,.025),0 0 28px rgba(255,82,104,.035);
 }
 .radar { position:relative; }
-.radar:after { content:"";position:absolute;inset:-7px;border:1px dashed rgba(84,231,255,.3);border-radius:50%;animation:spinRadar 12s linear infinite; }
+.radar:after { content:"";position:absolute;inset:-7px;border:1px dashed rgba(255,82,104,.3);border-radius:50%;animation:spinRadar 12s linear infinite; }
 .result-box {
-  border-color:rgba(84,231,255,.36) !important;
-  box-shadow:inset 0 0 45px rgba(84,231,255,.035),0 0 38px rgba(84,231,255,.055);
+  border-color:rgba(255,82,104,.36) !important;
+  box-shadow:inset 0 0 45px rgba(255,82,104,.035),0 0 38px rgba(255,82,104,.055);
 }
 div.stButton > button {
   background:linear-gradient(100deg,#087e98,#344cc2 58%,#7148c9) !important;
@@ -137,9 +137,9 @@ div.stButton > button {
 }
 div.stButton > button:hover {
   transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(84,231,255,.2),0 0 0 3px rgba(84,231,255,.045) !important;
+  box-shadow:0 8px 30px rgba(255,82,104,.2),0 0 0 3px rgba(255,82,104,.045) !important;
 }
-.stTextArea textarea:focus { border-color:rgba(84,231,255,.65)!important;box-shadow:0 0 0 3px rgba(84,231,255,.07)!important; }
+.stTextArea textarea:focus { border-color:rgba(255,82,104,.65)!important;box-shadow:0 0 0 3px rgba(255,82,104,.07)!important; }
 @keyframes heroEnter { from { opacity:0; transform:translateY(12px); filter:blur(5px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
 @keyframes orbitFloat { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(12px) scale(1.025); } }
 @keyframes cardScan { 0% { left:-35%; opacity:0; } 15% { opacity:.9; } 55% { opacity:.5; } 100% { left:120%; opacity:0; } }
@@ -166,9 +166,9 @@ div.stButton > button:hover {
 .alert-title { font-size:1.13rem;font-weight:800;letter-spacing:-.02em;color:#fff0f3;margin-bottom:4px; }
 .alert-copy { color:#e6bac5;font-size:.88rem;line-height:1.55; }
 .real-alert { display:flex;gap:12px;align-items:flex-start;margin:0 0 16px;padding:15px 17px;
-  border:1px solid rgba(84,231,255,.30);border-left:3px solid #54e7ff;border-radius:14px;
+  border:1px solid rgba(255,82,104,.30);border-left:3px solid #ff5268;border-radius:14px;
   background:linear-gradient(110deg,rgba(10,49,59,.65),rgba(12,19,33,.92));animation:alertEnter .45s ease-out both; }
-.real-alert .alert-icon { color:#54e7ff;background:rgba(84,231,255,.08);border-color:rgba(84,231,255,.25);animation:none; }
+.real-alert .alert-icon { color:#ff5268;background:rgba(255,82,104,.08);border-color:rgba(255,82,104,.25);animation:none; }
 @keyframes alertEnter { from {opacity:0;transform:translateY(8px);filter:blur(3px)} to {opacity:1;transform:translateY(0);filter:blur(0)} }
 @keyframes alertBreath { 0%,100% {box-shadow:0 0 0 1px rgba(255,93,120,.06),0 0 15px rgba(255,65,105,.08)} 50% {box-shadow:0 0 0 1px rgba(255,93,120,.16),0 0 25px rgba(255,65,105,.18)} }
 @keyframes iconPulse { 0%,100% {transform:scale(1)} 50% {transform:scale(1.06)} }
@@ -538,3 +538,102 @@ if page == "Home":
     for item in st.session_state.get("recent_news_items",[])[:3]:
         st.markdown(f'<div class="live-card"><div class="live-meta">{html.escape(item["source"])} · {html.escape(item["published"])}</div><h4>{html.escape(item["title"])}</h4><a href="{html.escape(item["link"],quote=True)}" target="_blank">READ REPORT ↗</a></div>',unsafe_allow_html=True)
 
+
+elif page == "Scanner":
+    st.markdown('<div class="eyebrow">TRUTHLENS / CLAIM SCANNER</div><h1>Scan a headline or article</h1><p class="hero-copy">The classifier detects language patterns learned from labelled historical examples. Its verdict is not proof of truth or falsehood.</p>', unsafe_allow_html=True)
+    mode = st.radio("INPUT TYPE", ["Headline / claim", "Full article"], horizontal=True, key="scanner_mode")
+    submitted_text = st.text_area("Paste text to analyse", height=190, placeholder="Paste a headline or the article text here…", key="scanner_text")
+    if st.button("⚡ RUN ANALYSIS", use_container_width=True, key="run_scan"):
+        if len(submitted_text.strip()) < 20:
+            st.warning("Please enter at least 20 characters so the model has some text to analyse.")
+        else:
+            pred = model.predict([submitted_text])[0]
+            try:
+                probs = model.predict_proba([submitted_text])[0]
+                classes = list(model.classes_)
+                confidence = float(probs[classes.index(pred)])
+            except Exception:
+                confidence = None
+            st.session_state["last_scan"] = {"text": submitted_text, "label": pred, "confidence": confidence, "signals": explain_words(model, submitted_text, pred)}
+    result = st.session_state.get("last_scan")
+    if result:
+        fake = result["label"] == "FAKE"
+        color = "#ff4c61" if fake else "#57e889"
+        title = "LIKELY FAKE" if fake else "LIKELY TRUE"
+        conf = result["confidence"]
+        st.markdown(f'''<div style="border:1px solid {color};border-radius:18px;padding:24px;background:linear-gradient(120deg,{"rgba(80,0,14,.35)" if fake else "rgba(0,70,30,.25)"},rgba(5,7,10,.8));animation:flickerIn .6s ease-out both"><div style="font-size:2rem;font-weight:800;color:{color}">{"⚠" if fake else "✓"} {title}</div><div style="margin-top:8px">Model pattern score: {f"{conf*100:.1f}%" if conf is not None else "Unavailable"}</div><p style="margin-top:12px">This is a machine-learning classification, not a verified fact-check. Confirm important claims with independent reliable sources.</p></div>''', unsafe_allow_html=True)
+        st.subheader("Text signals")
+        if result["signals"]:
+            st.write("Terms that influenced the model's classification:")
+            st.dataframe(pd.DataFrame(result["signals"], columns=["Text signal", "Model contribution"]), use_container_width=True, hide_index=True)
+        else:
+            st.info("The model did not identify clear individual word signals for this input.")
+        if st.button("Find recent reports about this claim", key="scan_to_evidence"):
+            st.session_state["evidence_query"] = result["text"][:180]
+            st.session_state["navigation_target"] = "Evidence"
+            st.rerun()
+
+elif page == "Live News":
+    st.markdown('<div class="eyebrow">LIVE NEWS / RSS DISCOVERY</div><h1>Recent headlines</h1><p class="hero-copy">Search Google News RSS for recent reporting. Headlines are leads for research, not proof that a claim is true.</p>', unsafe_allow_html=True)
+    q = st.text_input("Search topic", value=st.session_state.get("recent_news_query", "India"), key="live_news_query", placeholder="e.g. election results, space mission, public health")
+    limit = st.slider("Number of headlines", 5, 20, 10)
+    if st.button("FETCH RECENT NEWS ↗", use_container_width=True, key="live_news_fetch"):
+        try:
+            st.session_state["recent_news_items"] = fetch_google_news(q, limit)
+            st.session_state["recent_news_query"] = q
+            st.success(f"Loaded {len(st.session_state['recent_news_items'])} headlines.")
+        except Exception as e:
+            st.error("Could not load the RSS feed. The hosting environment or network may be blocking external requests. Try again later.")
+    items = st.session_state.get("recent_news_items", [])
+    if items:
+        for item in items:
+            st.markdown(f'<div class="panel" style="margin:12px 0"><div class="eyebrow">{html.escape(item["source"])} · {html.escape(item["published"])}</div><h3>{html.escape(item["title"])}</h3><a href="{html.escape(item["link"], quote=True)}" target="_blank" rel="noopener noreferrer">Open report ↗</a></div>', unsafe_allow_html=True)
+            if st.button("Analyse this headline", key="analyse_news_" + str(abs(hash(item["title"])) )):
+                st.session_state["last_scan"] = {"text": item["title"], "label": model.predict([item["title"]])[0], "confidence": None, "signals": explain_words(model, item["title"], model.predict([item["title"]])[0])}
+                st.session_state["navigation_target"] = "Scanner"
+                st.rerun()
+    else:
+        st.info("Enter a topic and select Fetch Recent News to load current headlines.")
+
+elif page == "Evidence":
+    st.markdown('<div class="eyebrow">EVIDENCE / SOURCE REVIEW</div><h1>Evidence explorer</h1><p class="hero-copy">Find related recent reports and open the original publishers to compare coverage. This page does not automatically establish whether a claim is true.</p>', unsafe_allow_html=True)
+    default_q = st.session_state.get("evidence_query", "")
+    q = st.text_input("Claim or topic to research", value=default_q, key="evidence_search_query", placeholder="Paste the key claim or topic")
+    if st.button("SEARCH SOURCES", use_container_width=True, key="evidence_fetch"):
+        try:
+            st.session_state["evidence_items"] = fetch_google_news(q, 10)
+            st.session_state["evidence_query"] = q
+        except Exception:
+            st.error("Could not reach Google News RSS. Check network access and try again.")
+    items = st.session_state.get("evidence_items", [])
+    if items:
+        st.subheader("Related reports")
+        for item in items:
+            st.markdown(f'<div class="panel" style="margin:10px 0"><div class="eyebrow">{html.escape(item["source"])} · {html.escape(item["published"])}</div><h3>{html.escape(item["title"])}</h3><a href="{html.escape(item["link"], quote=True)}" target="_blank" rel="noopener noreferrer">Read source ↗</a></div>', unsafe_allow_html=True)
+        st.caption("Compare dates, original documents, named sources, and whether independent outlets corroborate the same specific claim.")
+    else:
+        st.info("Search for a claim to collect related news reports here.")
+
+elif page == "Model Lab":
+    st.markdown('<div class="eyebrow">MODEL LAB / EVALUATION</div><h1>Model performance</h1><p class="hero-copy">Metrics below are calculated by the app on the selected dataset split. They are not a guarantee of real-world accuracy.</p>', unsafe_allow_html=True)
+    a,b,c,d = st.columns(4)
+    a.metric("Examples", f"{len(df):,}")
+    b.metric("Accuracy", f"{metrics['accuracy']*100:.1f}%")
+    c.metric("Fake precision", f"{metrics['precision']*100:.1f}%")
+    d.metric("Fake recall", f"{metrics['recall']*100:.1f}%")
+    st.subheader("Confusion matrix")
+    matrix = pd.DataFrame(metrics["matrix"], index=["Actual REAL", "Actual FAKE"], columns=["Predicted REAL", "Predicted FAKE"])
+    st.dataframe(matrix, use_container_width=True)
+    if metrics["split"]:
+        st.success(f"Evaluation used a held-out test split of {metrics['test_size']:,} examples.")
+    else:
+        st.warning("No independent hold-out split was possible; these metrics may be optimistic.")
+    st.subheader("Dataset information")
+    st.write(f"**Source:** {dataset_source}")
+    st.write(f"**Rows used:** {len(df):,}")
+    st.write("**Labels:** " + ", ".join(sorted(df["label"].dropna().unique().tolist())))
+    st.caption("Historical datasets can contain topic, publisher, and time-period bias. Do not use this model as the sole basis for decisions.")
+
+elif page == "About":
+    st.markdown('<div class="eyebrow">ABOUT / RESPONSIBLE VERIFICATION</div><h1>TruthLens AI</h1><p class="hero-copy">A news-literacy prototype for exploring language patterns and finding reporting that may help a reader investigate a claim.</p>', unsafe_allow_html=True)
+    st.markdown('<div class="panel"><h3>What it does</h3><ul><li>Classifies text using TF-IDF features and logistic regression trained on labelled examples.</li><li>Searches recent headlines through Google News RSS when external access is available.</li><li>Shows text signals and links that can help a user continue researching a claim.</li></ul><h3>What it does not do</h3><ul><li>It cannot prove a claim true or false from language alone.</li><li>A model score is not the probability that a statement is factually true.</li><li>News search results may be incomplete, unavailable, or unrelated; inspect original sources yourself.</li></ul></div>', unsafe_allow_html=True)
